@@ -10,9 +10,9 @@ type User struct {
 	models.BaseModel
 
 	Name     string `json:"name,omitempty"`
-	Email    string `json:"-"`
-	Phone    string `json:"-"`
-	Password string `json:"-"`
+	Email    string `json:"email,omitempty"`
+	Phone    string `json:"phone,omitempty"`
+	Password string `json:"password,omitempty"`
 
 	models.CommonTimestampsField
 }

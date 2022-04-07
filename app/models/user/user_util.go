@@ -17,3 +17,8 @@ func IsPhoneExist(phone string) bool {
 	database.DB.Model(User{}).Where("phone = ?", phone).Count(&count)
 	return count > 0
 }
+
+func GetUser(id int) (userModel User) {
+	database.DB.Where("id = ?", id).Find(&userModel)
+	return
+}
