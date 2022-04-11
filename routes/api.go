@@ -25,6 +25,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 			user := new (auth.UserController)
 			authGroup.POST("/getUser", user.GetUser)
+
+			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
+
+			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
 		}
 	}
 }

@@ -17,7 +17,7 @@ type SMTP struct {
 func (s *SMTP) Send(email Email, config map[string]string) bool  {
 	e := emailPKG.NewEmail()
 
-	e.From = fmt.Sprint("%v <%v>", email.From.Name, email.From.Address)
+	e.From = fmt.Sprintf("%v <%v>", email.From.Name, email.From.Address)
 	e.To = email.To
 	e.Bcc = email.Bcc
 	e.Cc = email.Cc
