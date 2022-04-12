@@ -2,7 +2,9 @@
 package helpers
 
 import (
+	"crypto/md5"
 	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"reflect"
@@ -52,4 +54,11 @@ func RandomNumber(length int) string {
 		b[i] = table[int(b[i])%len(table)]
 	}
 	return string(b)
+}
+
+func GetStringMd5(s string) string {
+	md5 := md5.New()
+	md5.Write([]byte(s))
+	md5Str := hex.EncodeToString(md5.Sum(nil))
+	return md5Str
 }
