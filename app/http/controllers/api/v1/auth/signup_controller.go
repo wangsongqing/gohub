@@ -6,7 +6,8 @@ import (
 	v1 "gohub/app/http/controllers/api/v1"
 	"gohub/app/models/user"
 	"gohub/app/requests"
-	"gohub/pkg/helpers"
+	"gohub/pkg/hash"
+	_ "gohub/pkg/helpers"
 	"gohub/pkg/response"
 )
 
@@ -55,7 +56,7 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	userModel := user.User{
 		Name:     request.Name,
 		Email:    request.Email,
-		Password: helpers.GetStringMd5(request.Password),
+		Password: hash.BcryptHash(request.Password),
 	}
 	userModel.Create()
 	if userModel.ID > 0 {
@@ -83,7 +84,7 @@ func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	_user := user.User{
 		Name:     request.Name,
 		Phone:    request.Phone,
-		Password: request.Password,
+		Password: hash.BcryptHash(request.Password),
 	}
 
 	_user.Create()
