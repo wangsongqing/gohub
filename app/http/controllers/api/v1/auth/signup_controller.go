@@ -3,11 +3,13 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
+	_ "github.com/golang-jwt/jwt"
 	v1 "gohub/app/http/controllers/api/v1"
 	"gohub/app/models/user"
 	"gohub/app/requests"
 	"gohub/pkg/hash"
 	_ "gohub/pkg/helpers"
+	"gohub/pkg/jwt"
 	"gohub/pkg/response"
 )
 
@@ -53,15 +55,17 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 		return
 	}
 
-	userModel := user.User{
+	_data := user.User{
 		Name:     request.Name,
 		Email:    request.Email,
 		Password: hash.BcryptHash(request.Password),
 	}
-	userModel.Create()
-	if userModel.ID > 0 {
+	_data.Create()
+	if _data.ID > 0 {
+		token := jwt.NewJWT().IssueToken(_data.GetStringID(), _data.Name)
 		response.JSON(c, gin.H{
-			"ok": true,
+			"token":token,
+			"data": _data,
 		})
 	} else {
 		response.JSON(c, gin.H{
