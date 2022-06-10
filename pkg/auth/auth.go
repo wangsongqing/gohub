@@ -22,3 +22,12 @@ func LoginByEmail(email string) (user.User, error) {
 
 	return userModel, nil
 }
+
+func LoginByAccount(account string) (user.User, error) {
+	userModel := user.GetAccount(account)
+	if userModel.ID != 0 {
+		return userModel, nil
+	}
+
+	return user.User{}, errors.New("账户不存在")
+}

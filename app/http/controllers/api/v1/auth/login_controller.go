@@ -56,3 +56,21 @@ func (lc *LoginController) LoginByEmail(c *gin.Context) {
 		})
 	}
 }
+
+// LoginByPassword 账号密码登录
+func (lc *LoginController) LoginByPassword(c *gin.Context) {
+	request := requests.LoginPasswordRequest{}
+	if ok := requests.Validate(c, &request, requests.LoginPassword); !ok {
+		return
+	}
+
+	userInfo, err := auth.LoginByAccount(request.Account)
+	if userInfo.ID > 0 {
+		token := jwt.NewJWT().IssueToken(userInfo.GetStringID(), userInfo.Name)
+		response.JSON(c, gin.H{
+			"token": token,
+		})
+	} else {
+		response.Error(c, err, "邮箱账号不存在或密码错误")
+	}
+}

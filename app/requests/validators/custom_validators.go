@@ -2,8 +2,10 @@
 package validators
 
 import (
+	"gohub/app/models/user"
 	"gohub/pkg/captcha"
 	"gohub/pkg/config"
+	"gohub/pkg/hash"
 	"gohub/pkg/verifycode"
 )
 
@@ -30,5 +32,19 @@ func ValidateVerifyCode(key, answer string, errs map[string][]string) map[string
 			errs["verify_code"] = append(errs["verify_code"], "验证码错误")
 		}
 	}
+	return errs
+}
+
+// ValidatePassword 账号密码验证
+func ValidatePassword(account string, pwd string, errs map[string][]string) map[string][]string {
+	userInfo := user.GetAccount(account)
+	if userInfo.ID <= 0 {
+		errs["password"] = append(errs["password"], "账号不存在")
+	}
+
+	if checkPwd := hash.BcryptCheck(pwd, userInfo.Password); !checkPwd {
+		errs["password"] = append(errs["password"], "密码错误，请重试")
+	}
+
 	return errs
 }

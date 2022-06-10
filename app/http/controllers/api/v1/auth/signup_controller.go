@@ -48,7 +48,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	})
 }
 
-// 邮件注册
+// SignupUsingEmail 邮件注册
 func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	request := requests.SignupUsingEmail{}
 	if ok := requests.Validate(c, &request, requests.ValidateSignupEmail); !ok {
@@ -64,8 +64,8 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 	if _data.ID > 0 {
 		token := jwt.NewJWT().IssueToken(_data.GetStringID(), _data.Name)
 		response.JSON(c, gin.H{
-			"token":token,
-			"data": _data,
+			"token": token,
+			"data":  _data,
 		})
 	} else {
 		response.JSON(c, gin.H{

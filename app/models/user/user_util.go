@@ -32,3 +32,8 @@ func GetByEmail(email string) (userModel User) {
 	database.DB.Where("email = ?", email).Find(&userModel)
 	return
 }
+
+func GetAccount(account string) (userModel User) {
+	database.DB.Where("(phone = ? or email = ?)", account, account).Find(&userModel)
+	return
+}
