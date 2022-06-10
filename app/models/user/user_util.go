@@ -22,3 +22,13 @@ func GetUser(id int) (userModel User) {
 	database.DB.Where("id = ?", id).Find(&userModel)
 	return
 }
+
+func GetByPhone(phone string) (userModel User) {
+	database.DB.Where("phone = ?", phone).Find(&userModel)
+	return
+}
+
+func GetByEmail(email string) (userModel User) {
+	database.DB.Where("email = ?", email).Find(&userModel)
+	return
+}
