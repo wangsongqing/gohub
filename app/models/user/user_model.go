@@ -21,3 +21,8 @@ type User struct {
 func (userModel *User) Create() {
 	database.DB.Create(&userModel)
 }
+
+func (userModel *User) Save() (rowsAffected int64) {
+	result := database.DB.Save(&userModel)
+	return result.RowsAffected
+}

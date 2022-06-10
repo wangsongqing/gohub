@@ -48,3 +48,19 @@ func ValidatePassword(account string, pwd string, errs map[string][]string) map[
 
 	return errs
 }
+
+// ValidateCheckPassword 修改密码手机验证码
+func ValidateCheckPassword(phone string, code string, errs map[string][]string) map[string][]string {
+	userInfo := user.GetByPhone(phone)
+	if userInfo.ID == 0 {
+		errs["phone"] = append(errs["phone"], "账户不存在")
+	}
+
+	if config.Env("APP_ENV") != "local" {
+		if ok := verifycode.NewVerifyCode().CheckAnswer(phone, code); !ok {
+			errs["verify_code"] = append(errs["verify_code"], "验证码错误")
+		}
+	}
+
+	return errs
+}
