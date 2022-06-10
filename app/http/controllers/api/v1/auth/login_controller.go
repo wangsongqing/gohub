@@ -74,3 +74,15 @@ func (lc *LoginController) LoginByPassword(c *gin.Context) {
 		response.Error(c, err, "邮箱账号不存在或密码错误")
 	}
 }
+
+//RefreshToken 刷新 Access Token
+func (lc *LoginController) RefreshToken(c *gin.Context) {
+	token, errs := jwt.NewJWT().RefreshToken(c)
+	if errs != nil {
+		response.Error(c, errs, "令牌刷新失败")
+	} else {
+		response.JSON(c, gin.H{
+			"token": token,
+		})
+	}
+}
