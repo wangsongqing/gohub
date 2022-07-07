@@ -64,3 +64,19 @@ func ValidateCheckPassword(phone string, code string, errs map[string][]string) 
 
 	return errs
 }
+
+// ValidateCheckPasswordEmail ValidateCheckPassword 修改密码邮箱验证码
+func ValidateCheckPasswordEmail(email string, code string, errs map[string][]string) map[string][]string {
+	userInfo := user.GetByEmail(email)
+	if userInfo.ID == 0 {
+		errs["email"] = append(errs["email"], "账户不存在")
+	}
+
+	if config.Env("APP_ENV") != "local" {
+		if ok := verifycode.NewVerifyCode().CheckAnswer(email, code); !ok {
+			errs["verify_code"] = append(errs["verify_code"], "验证码错误")
+		}
+	}
+
+	return errs
+}

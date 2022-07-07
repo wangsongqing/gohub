@@ -45,6 +45,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			// 手机修改密码
 			pwc := new(auth.PasswordController)
 			authGroup.POST("/password-reset/using-phone", pwc.PhoneByPassword)
+			authGroup.POST("/password-reset/using-email", pwc.EmailByPassword)
 		}
 	}
 }

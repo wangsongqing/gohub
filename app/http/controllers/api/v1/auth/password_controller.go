@@ -26,3 +26,17 @@ func (pc *PasswordController) PhoneByPassword(c *gin.Context) {
 	userModel.Save()
 	response.Success(c)
 }
+
+// EmailByPassword 邮箱修改密码
+func (pc *PasswordController) EmailByPassword(c *gin.Context) {
+	// 参数验证
+	request := requests.PasswordFindEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.PasswordFindEmail); !ok {
+		return
+	}
+
+	userModel := user.GetByEmail(request.Email)
+	userModel.Password = hash.BcryptHash(request.Password)
+	userModel.Save()
+	response.Success(c)
+}
