@@ -2,10 +2,11 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
+	controllers "gohub/app/http/controllers/api/v1"
 	"gohub/app/http/controllers/api/v1/auth"
 	"gohub/app/http/middlewares"
-
-	"github.com/gin-gonic/gin"
+	middleware_app "gohub/app/middlewares"
 )
 
 // RegisterAPIRoutes 注册网页相关路由
@@ -51,7 +52,15 @@ func RegisterAPIRoutes(r *gin.Engine) {
 				pwc := auth.PasswordController{}
 				authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("20-H"), pwc.PhoneByPassword)
 				authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("20-H"), pwc.EmailByPassword)
+
+				uc := new(controllers.UsersController)
+
+				// 获取当前用户
+				//http://127.0.0.1:3002/v1/user
+				v1.GET("/user", middleware_app.AuthJWT(), uc.CurrentUser)
+
 			}
+
 		}
 	}
 }
