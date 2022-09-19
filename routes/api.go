@@ -18,7 +18,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			authGroup := v1.Group("/auth")
 			{
-				suc := new(auth.SignupController)
+				// suc := new(auth.SignupController)
+				suc := auth.SignupController{}
 				// 判断手机是否已注册
 				authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
 				authGroup.POST("/signup/email/exist", suc.IsEmailExist)
@@ -35,7 +36,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 				authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
 
-				lgc := new(auth.LoginController)
+				// lgc := new(auth.LoginController)
+				var lgc auth.LoginController
 				// 使用手机号，短信验证码进行登录
 				authGroup.POST("/login/using-phone", lgc.LoginByPhone)
 				// 使用邮箱登录
@@ -46,7 +48,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 				authGroup.POST("/login/refresh-token", lgc.RefreshToken)
 
 				// 手机修改密码
-				pwc := new(auth.PasswordController)
+				pwc := auth.PasswordController{}
 				authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("20-H"), pwc.PhoneByPassword)
 				authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("20-H"), pwc.EmailByPassword)
 			}

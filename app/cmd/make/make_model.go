@@ -8,8 +8,8 @@ import (
 )
 
 var CmdMakeModel = &cobra.Command{
-	Use:   "model",
-	Short: "Crate model file, example: make model user",
+	Use:   "models",
+	Short: "Crate models file, example: make models user",
 	Run:   runMakeModel,
 	Args:  cobra.ExactArgs(1), // 只允许且必须传 1 个参数
 }
@@ -25,7 +25,7 @@ func runMakeModel(cmd *cobra.Command, args []string) {
 	os.MkdirAll(dir, os.ModePerm)
 
 	// 替换变量
-	createFileFromStub(dir+model.PackageName+"_model.go", "model/model", model)
-	createFileFromStub(dir+model.PackageName+"_util.go", "model/model_util", model)
-	createFileFromStub(dir+model.PackageName+"_hooks.go", "model/model_hooks", model)
+	createFileFromStub(dir+model.PackageName+"_model.go", "models/models", model)
+	createFileFromStub(dir+model.PackageName+"_util.go", "models/model_util", model)
+	createFileFromStub(dir+model.PackageName+"_hooks.go", "models/model_hooks", model)
 }
