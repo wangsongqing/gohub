@@ -4,6 +4,7 @@ package migrate
 import (
 	"gohub/pkg/console"
 	"gohub/pkg/database"
+	"gohub/pkg/file"
 	"os"
 
 	"gorm.io/gorm"
