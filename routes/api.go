@@ -70,6 +70,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 				{
 					cgcGroup.POST("", middleware_app.AuthJWT(), cgc.Store)
 					cgcGroup.PUT("/:id", middleware_app.AuthJWT(), cgc.Update) //127.0.0.1:3002/v1/categories/1
+					cgcGroup.GET("", middleware_app.AuthJWT(), cgc.Index)
 				}
 			}
 

@@ -54,3 +54,11 @@ func (ctrl *CategoriesController) Update(c *gin.Context) {
 
 	response.Created(c, categoryModel)
 }
+
+func (ctrl *CategoriesController) Index(c *gin.Context) {
+	data, pager := category.Paginate(c, 10)
+	response.JSON(c, gin.H{
+		"data":  data,
+		"pager": pager,
+	})
+}
