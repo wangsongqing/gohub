@@ -12,6 +12,7 @@ type CategoriesController struct {
 	BaseAPIController
 }
 
+// Store 添加分类
 func (ctrl *CategoriesController) Store(c *gin.Context) {
 
 	request := requests.CategoryRequest{}
@@ -31,6 +32,7 @@ func (ctrl *CategoriesController) Store(c *gin.Context) {
 	}
 }
 
+// Update 更新分类
 func (ctrl *CategoriesController) Update(c *gin.Context) {
 
 	// 验证 url 参数 id 是否正确
@@ -55,10 +57,27 @@ func (ctrl *CategoriesController) Update(c *gin.Context) {
 	response.Created(c, categoryModel)
 }
 
+// Index 分类列表
 func (ctrl *CategoriesController) Index(c *gin.Context) {
 	data, pager := category.Paginate(c, 10)
 	response.JSON(c, gin.H{
 		"data":  data,
 		"pager": pager,
 	})
+}
+
+// Delete 删除分类
+func (ctrl *CategoriesController) Delete(c *gin.Context) {
+	categoryModel := category.Get(c.Param("id"))
+	if categoryModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+
+	if ok := categoryModel.Delete(); ok <= 0 {
+		response.Abort500(c, "删除失败~")
+		return
+	}
+
+	response.Success(c)
 }
