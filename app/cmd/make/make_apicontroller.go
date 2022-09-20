@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// CmdMakeAPIController
+// go run main.go make apicontroller v1/category 创建控制器
 var CmdMakeAPIController = &cobra.Command{
 	Use:   "apicontroller",
 	Short: "Create api controller，exmaple: make apicontroller v1/user",

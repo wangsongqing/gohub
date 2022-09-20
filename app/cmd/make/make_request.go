@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// CmdMakeRequest
+// go run main.go make request user 创建分类验证器
 var CmdMakeRequest = &cobra.Command{
 	Use:   "request",
 	Short: "Create request file, example make request user",
