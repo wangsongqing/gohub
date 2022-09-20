@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// go run main.go migrate up 执行迁移
 var CmdMigrate = &cobra.Command{
 	Use:   "migrate",
 	Short: "Run database migration",
