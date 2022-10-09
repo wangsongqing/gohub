@@ -28,3 +28,8 @@ type Topic struct {
 func (Topic *Topic) Create() {
 	database.DB.Create(&Topic)
 }
+
+func (Topic *Topic) Save() (rowsAffected int64) {
+	result := database.DB.Save(&Topic)
+	return result.RowsAffected
+}

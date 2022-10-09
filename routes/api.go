@@ -78,6 +78,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 				tpcGroup := v1.Group("/topics")
 				{
 					tpcGroup.POST("", middleware_app.AuthJWT(), tpc.Store)
+					tpcGroup.PUT("/:id", middleware_app.AuthJWT(), tpc.Update)
 				}
 			}
 
