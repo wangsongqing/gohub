@@ -2,9 +2,10 @@
 package topic
 
 import (
-    "gohub/app/models"
-    "gohub/app/models/category"
-    "gohub/app/models/user"
+	"gohub/app/models"
+	"gohub/app/models/category"
+	"gohub/app/models/user"
+	"gohub/pkg/database"
 )
 
 type Topic struct {
@@ -22,4 +23,8 @@ type Topic struct {
 	Category category.Category `json:"category"`
 
 	models.CommonTimestampsField
+}
+
+func (Topic *Topic) Create() {
+	database.DB.Create(&Topic)
 }
