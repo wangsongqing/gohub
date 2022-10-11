@@ -63,3 +63,23 @@ func (ctrl *TopicsController) Update(c *gin.Context) {
 
 	response.Data(c, row)
 }
+
+func (ctrl *TopicsController) Delete(c *gin.Context) {
+	topicModel := topic.Get(c.Param("id"))
+	if topicModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+
+	if ok := policies.CanModifyTopic(c, topicModel); !ok {
+		response.Abort403(c)
+		return
+	}
+
+	row := topicModel.Delete()
+	if row <= 0 {
+		response.Abort500(c, "更新失败，请稍后尝试~")
+	}
+
+	response.Data(c, row)
+}
