@@ -14,6 +14,14 @@ type TopicsController struct {
 	BaseAPIController
 }
 
+func (ctrl *TopicsController) Index(c *gin.Context) {
+	data, pager := topic.Paginate(c, 10)
+	response.JSON(c, gin.H{
+		"data":  data,
+		"pager": pager,
+	})
+}
+
 func (ctrl *TopicsController) Store(c *gin.Context) {
 
 	request := requests.TopicRequest{}

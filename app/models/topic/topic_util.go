@@ -1,7 +1,10 @@
 package topic
 
 import (
+	"github.com/gin-gonic/gin"
+	"gohub/pkg/app"
 	"gohub/pkg/database"
+	"gohub/pkg/paginator"
 )
 
 func Get(idstr string) (topic Topic) {
@@ -28,4 +31,15 @@ func IsExist(field, value string) bool {
 func (Topic *Topic) Delete() (RowsAffected int64) {
 	result := database.DB.Delete(&Topic)
 	return result.RowsAffected
+}
+
+func Paginate(c *gin.Context, perPage int) (users []Topic, paging paginator.Paging) {
+	paging = paginator.Paginate(
+		c,
+		database.DB.Model(Topic{}),
+		&users,
+		app.V1URL(database.TableName(&Topic{})),
+		perPage,
+	)
+	return
 }
