@@ -113,8 +113,9 @@ func (ctrl *TopicsController) FindTest(c *gin.Context) {
 	//_where["user_id"] = "1"
 	//_where["title"] = "Sit perferendis consequatur voluptatem aut accusantium."
 	_where := map[string]interface{}{
-		"user_id": "1",
-		"title":   "Sit perferendis consequatur voluptatem aut accusantium.",
+		// "user_id": c.Query("user_id"),
+		"title":   c.Query("title"),
+		"user_id": c.PostForm("user_id"),
 	}
 	_data := topic.FindMap(_where)
 	response.Data(c, _data)
