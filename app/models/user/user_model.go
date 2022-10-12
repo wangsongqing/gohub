@@ -15,6 +15,10 @@ type User struct {
 	Phone    string `json:"phone"`
 	Password string `json:"-"`
 
+	City         string `json:"city,omitempty"`
+	Introduction string `json:"introduction,omitempty"`
+	Avatar       string `json:"avatar,omitempty"`
+
 	models.CommonTimestampsField
 }
 
