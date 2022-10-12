@@ -7,11 +7,13 @@ import (
 	"gohub/app/http/controllers/api/v1/auth"
 	"gohub/app/http/middlewares"
 	middleware_app "gohub/app/middlewares"
+	"net/http"
 )
 
 // RegisterAPIRoutes 注册网页相关路由
 func RegisterAPIRoutes(r *gin.Engine) {
 
+	r.StaticFS("/public/uploads", http.Dir("./public/uploads"))
 	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
 	v1 := r.Group("/v1")
 	{
@@ -67,6 +69,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 					usersGroup.PUT("/email", middleware_app.AuthJWT(), uc.UpdateEmail)
 					usersGroup.PUT("/phone", middleware_app.AuthJWT(), uc.UpdatePhone)
 					usersGroup.PUT("/update_password", middleware_app.AuthJWT(), uc.UpdatePassword)
+					usersGroup.PUT("/avatar", middleware_app.AuthJWT(), uc.UpdateAvatar)
 				}
 
 				cgc := controllers.CategoriesController{}

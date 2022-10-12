@@ -82,3 +82,17 @@ func RandomString(length int) string {
 	}
 	return string(b)
 }
+
+// FmtStrFromInterface 转换interface到字符串
+func FmtStrFromInterface(val interface{}) string {
+	if val == nil {
+		return ""
+	}
+	switch ret := val.(type) {
+	case string:
+		return ret
+	case int8, uint8, int16, uint16, int, uint, int64, uint64, float32, float64:
+		return fmt.Sprintf("%v", ret)
+	}
+	return ""
+}
