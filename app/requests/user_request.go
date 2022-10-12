@@ -119,3 +119,53 @@ func UserUpdatePhone(data interface{}, c *gin.Context) map[string][]string {
 
 	return errs
 }
+
+type UserUpdatePasswordRequest struct {
+	ConfirmPassword string `json:"confirm_password,omitempty" valid:"confirm_password"`
+	Password        string `json:"password,omitempty" valid:"password"`
+	NewPassword     string `json:"new_password,omitempty" valid:"new_password"`
+}
+
+func UserUpdatePassword(data interface{}, c *gin.Context) map[string][]string {
+	rule := govalidator.MapData{
+		"confirm_password": []string{
+			"required",
+			"min:6",
+			"max:10",
+		},
+		"password": []string{
+			"required",
+			"min:6",
+			"max:10",
+		},
+		"new_password": []string{
+			"required",
+			"min:6",
+			"max:10",
+		},
+	}
+
+	message := govalidator.MapData{
+		"confirm_password": []string{
+			"required:密码必填",
+			"min:密码长度必须大于6位",
+			"max:密码长度必须小于10位",
+		},
+		"password": []string{
+			"required:密码必填",
+			"min:密码长度必须大于6位",
+			"max:密码长度必须小于10位",
+		},
+		"new_password": []string{
+			"required:密码必填",
+			"min:密码长度必须大于6位",
+			"max:密码长度必须小于10位",
+		},
+	}
+
+	errs := validate(data, rule, message)
+	_data := data.(*UserUpdatePasswordRequest)
+	errs = validators.ValidatePasswordConfirm(_data.NewPassword, _data.ConfirmPassword, errs)
+
+	return errs
+}

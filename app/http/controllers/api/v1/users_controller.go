@@ -4,6 +4,7 @@ import (
 	"gohub/app/models/user"
 	"gohub/app/requests"
 	"gohub/pkg/auth"
+	"gohub/pkg/hash"
 	"gohub/pkg/response"
 
 	"github.com/gin-gonic/gin"
@@ -77,5 +78,27 @@ func (ctrl *UsersController) UpdatePhone(c *gin.Context) {
 		response.Success(c)
 	} else {
 		response.Abort500(c, "更新失败，请稍后尝试~")
+	}
+}
+
+func (ctrl *UsersController) UpdatePassword(c *gin.Context) {
+	request := requests.UserUpdatePasswordRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdatePassword); !ok {
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+
+	if ok := hash.BcryptCheck(request.Password, currentUser.Password); !ok {
+		response.Unauthorized(c, "原密码不正确")
+		return
+	}
+
+	currentUser.Password = hash.BcryptHash(request.NewPassword)
+	row := currentUser.Save()
+	if row > 0 {
+		response.Success(c)
+	} else {
+		response.Abort500(c, "更新失败")
 	}
 }
