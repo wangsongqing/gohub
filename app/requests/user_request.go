@@ -82,3 +82,40 @@ func UserUpdateEmail(data interface{}, c *gin.Context) map[string][]string {
 
 	return errs
 }
+
+type UserUpdatePhoneRequest struct {
+	Phone      string `json:"phone,omitempty" valid:"phone"`
+	VerifyCode string `json:"verify_code,omitempty" valid:"verify_code"`
+}
+
+func UserUpdatePhone(data interface{}, c *gin.Context) map[string][]string {
+	currentUser := auth.CurrentUser(c)
+	rules := govalidator.MapData{
+		"phone": []string{
+			"required",
+			"digits:11",
+			"not_exists:users,phone," + currentUser.GetStringID(),
+			"not_in:" + currentUser.Phone,
+		},
+		"verify_code": []string{"required", "digits:6"},
+	}
+
+	messages := govalidator.MapData{
+		"phone": []string{
+			"required:Phone手机号为必填",
+			"digits:手机号必须为11位",
+			"not_exists:手机号已经存在",
+			"not_in:新的 Phone 与老 Phone 一致",
+		},
+		"verify_code": []string{
+			"required:验证码必填",
+			"digits:验证码必须为6位",
+		},
+	}
+
+	errs := validate(data, rules, messages)
+	_data := data.(*UserUpdatePhoneRequest)
+	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
+
+	return errs
+}
