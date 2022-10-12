@@ -1,13 +1,12 @@
 package v1
 
 import (
+	"github.com/gin-gonic/gin"
 	"gohub/app/models/topic"
 	"gohub/app/policies"
 	"gohub/app/requests"
 	"gohub/pkg/auth"
 	"gohub/pkg/response"
-
-	"github.com/gin-gonic/gin"
 )
 
 type TopicsController struct {
@@ -100,4 +99,23 @@ func (ctrl *TopicsController) Delete(c *gin.Context) {
 	}
 
 	response.Data(c, row)
+}
+
+func (ctrl *TopicsController) FindTest(c *gin.Context) {
+	//_topic := topic.Topic{
+	//	UserID:     "1",
+	//	CategoryID: "1",
+	//	Title:      "Accusantium voluptatem perferendis sit consequatur aut.",
+	//}
+	//data := topic.WhereAll(_topic)
+
+	//var _where map[string]string
+	//_where["user_id"] = "1"
+	//_where["title"] = "Sit perferendis consequatur voluptatem aut accusantium."
+	_where := map[string]interface{}{
+		"user_id": "1",
+		"title":   "Sit perferendis consequatur voluptatem aut accusantium.",
+	}
+	_data := topic.FindMap(_where)
+	response.Data(c, _data)
 }
