@@ -18,7 +18,7 @@ func LoginByPhone(phone string) (user.User, error) {
 
 func LoginByEmail(email string) (user.User, error) {
 	userModel := user.GetByEmail(email)
-	if userModel.ID != 0 {
+	if userModel.ID == 0 {
 		return user.User{}, errors.New("邮箱未注册")
 	}
 
